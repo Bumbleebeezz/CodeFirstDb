@@ -4,6 +4,7 @@ using CodeFirstDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeFirstDb.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207153901_1.0")]
+    partial class _10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,24 +25,6 @@ namespace CodeFirstDb.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CodeFirstDb.Author", b =>
-                {
-                    b.Property<int>("AuthorID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorID"));
-
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("AuthorID");
-
-                    b.ToTable("Authors");
-                });
-
             modelBuilder.Entity("CodeFirstDb.Blog", b =>
                 {
                     b.Property<int>("BlogID")
@@ -47,9 +32,6 @@ namespace CodeFirstDb.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlogID"));
-
-                    b.Property<int?>("AuthorID")
-                        .HasColumnType("int");
 
                     b.Property<string>("BlogContent")
                         .IsRequired()
@@ -61,8 +43,6 @@ namespace CodeFirstDb.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("BlogID");
-
-                    b.HasIndex("AuthorID");
 
                     b.ToTable("Blogs");
                 });
@@ -86,14 +66,7 @@ namespace CodeFirstDb.Migrations
 
                     b.HasIndex("BlogID");
 
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("CodeFirstDb.Blog", b =>
-                {
-                    b.HasOne("CodeFirstDb.Author", null)
-                        .WithMany("Blogs")
-                        .HasForeignKey("AuthorID");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("CodeFirstDb.Comment", b =>
@@ -101,11 +74,6 @@ namespace CodeFirstDb.Migrations
                     b.HasOne("CodeFirstDb.Blog", null)
                         .WithMany("Comments")
                         .HasForeignKey("BlogID");
-                });
-
-            modelBuilder.Entity("CodeFirstDb.Author", b =>
-                {
-                    b.Navigation("Blogs");
                 });
 
             modelBuilder.Entity("CodeFirstDb.Blog", b =>
